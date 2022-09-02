@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="https://app-dummy123.herokuapp.com")
 public class StudentController {
 
     @Autowired
