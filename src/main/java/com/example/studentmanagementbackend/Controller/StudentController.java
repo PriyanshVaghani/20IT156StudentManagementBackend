@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins="https://app-dummy123.herokuapp.com")
+@CrossOrigin(origins = "http://localhost:3000")
 public class StudentController {
 
     @Autowired
@@ -25,9 +25,14 @@ public class StudentController {
     }
 
     @PostMapping("/student")
-    public List<Student> addStudent(@RequestBody Student student) {
-        studentRepository.save(student);
-        return studentRepository.findAll();
+    public String  addStudent(@RequestBody Student student) {
+        boolean studentExists = studentRepository.existsById(student.getId());
+        if (!studentExists) {
+            studentRepository.save(student);
+            return "Record is added successfully";
+        } else {
+            return "Student already Exists!!!";
+        }
     }
 
     @DeleteMapping("/student/{id}")
@@ -38,7 +43,7 @@ public class StudentController {
 
     @PutMapping("/student/{id}")
     public List<Student> updateStudent(@RequestBody Student student, @PathVariable Integer id) {
-        Student studentObj=studentRepository.findById(id).get();
+        Student studentObj = studentRepository.findById(id).get();
         studentObj.setName(student.getName());
         studentObj.setAddress(student.getAddress());
         studentRepository.save(studentObj);
