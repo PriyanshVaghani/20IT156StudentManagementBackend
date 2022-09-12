@@ -42,16 +42,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("USER");
     }
 
-    @Override
-    protected void configure(HttpSecurity http)throws Exception{
+    //    @Override
+    protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                        .antMatchers("/login").permitAll()
-                        .anyRequest().authenticated()
-                        .and()
-                                .formLogin();
+                .antMatchers("/login").permitAll()
+                .antMatchers("/student").permitAll()
+                .antMatchers("/student/{id}").permitAll()
+                .anyRequest().authenticated();
+//                        .and()
+//                                .formLogin();
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }
+
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();
@@ -59,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     @Bean
-    protected AuthenticationManager authenticationManager() throws Exception{
+    protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
 }
